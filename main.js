@@ -1,6 +1,18 @@
 // INITAILIZE THE GAME BOARD ON PAGE LOAD
+// make this project my own possibly use GIF to flip boxes or other animations
+initCategoryRow()//builds categories for Trebekardy boards 
+initBoard() //builds game board
 
-initBoard()
+function initCategoryRow() {
+    let catRow = document.getElementById('category-row')
+
+    for(let i=0; i<6; i++){
+        let box = document.createElement('div')
+        box.className = 'clue-box category-box'
+        catRow.appendChild(box)
+    }
+
+}
 
 function initBoard(){
     let board = document.getElementById('clue-board')
