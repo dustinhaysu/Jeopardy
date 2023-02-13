@@ -102,11 +102,19 @@ function setCategories (catArray) {
         children[i].innerHTML = catArray[i].title
 
     }
-
-
 }
 
-
-function getClue () {
-    console.log('Have a nice day!')
+//FIND CLICKED BOX INSIDE OF A GRID
+function getClue (event) {
+    let child = event.currentTarget
+    console.log(child)
+    child.classList.add('clicked-box')
+    let boxValue = child.innerHTML.slice(1)
+    let parent = child.parentNode
+    let index = Array.prototype.findIndex.call(parent.children, (c) => c === child) //2:48:00 VOD
+    let cluesList = catArray[index].clues
+    let clue = cluesList.find(obj => {
+        return obj.value == boxValue
+    })
+    console.log(clue)
 }
