@@ -92,6 +92,22 @@ function buildCategories () {
     })
 
 }
+//RESET BOARD AND $$ AMOUNT IF NEEDED
+
+function resetBoard() {
+    let clueParent = document.getElementById('clue-board')
+    while(clueParent.firstChild) {
+        clueParent.removeChild(clueParent.firstChild)
+    }
+    let catParent = document.getElementById('category-row')
+    while(catParent.firstChild){
+        catParent.removeChild(catParent.firstChild)
+    }
+    document.getElementById('score').innerText = 0
+    initBoard()
+    initCategoryRow()
+
+}
 
 // LOAD CATEGORIES TO THE BOARD
 
@@ -117,4 +133,40 @@ function getClue (event) {
         return obj.value == boxValue
     })
     console.log(clue)
+    showQuestion(clue, child, boxValue)
+}
+
+//SHOW QUESTION TO USER AND RECEIVE ANSWER
+
+function showQuestion(clue, target, boxValue){
+    let userAnswer = prompt(clue.question).toLowerCase()
+    let correctAnswer = clue.answer.toLowerCase().replace(/<\/?[^>]+(>|$)/g, "")
+    let possiblePoints = +(boxValue)
+    target.innerHTML = clue.answer
+    target.removeEventListener('click', getClue, false)
+    evaluateAnswer(userAnswer, correctAnswer, possiblePoints)
+}
+
+//EVALUATE ANSWER AND SHOW TO USER TO CONFIRM
+
+function evaluateAnswer(userAnswer, correctAnswer, possiblePoints){
+    let checkAnswer = (userAnswer == correctAnswer) ? 'correct' : 'incorrect'
+    let confirmAnswer = confirm(`For $${possiblePoints}, you answered "${userAnswer}", and the correct answer was "${correctAnswer}". Your answer appears to be ${checkAnswer}. Click OK to accept or click Cancel if the answer was not properly evaluated.`)
+    awardPoints(checkAnswer, confirmAnswer, possiblePoints)
+}
+
+//AWARD POINTS
+
+function awardPoints(checkAnswer, confirmAnswer, possiblePoints){
+    if(!(checkAnswer == 'incorrect' && confirmAnswer == true)){
+        //award points
+        let target = document.getElementById('score')
+        let currentScore = +(target.innerText)
+        currentScore += possiblePoints
+        target.innerText = currentScore
+
+    } else {
+        alert('No points awarded.')
+    }
+
 }
